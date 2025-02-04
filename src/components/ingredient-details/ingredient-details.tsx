@@ -12,7 +12,8 @@ export const IngredientDetails: FC = () => {
   const ingredientData = useSelector<RootState, TIngredient | undefined>(
     (state) =>
       state.ingredients.ingredients.find(
-        (ingredient) => ingredient._id === ingredientId
+        (ingredient: { _id: string | undefined }) =>
+          ingredient._id === ingredientId
       )
   );
 

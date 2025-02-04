@@ -26,7 +26,7 @@ const initialState: TBurgerIngredients = {
 
 export const getIngredientsThunk = createAsyncThunk(
   'ingredients/getIngredients',
-  () => getIngredientsApi()
+  async () => await getIngredientsApi()
 );
 
 const ingredientsSlice = createSlice({
@@ -94,6 +94,10 @@ const ingredientsSlice = createSlice({
           ingredientToMove
         );
       }
+    },
+    clearIngredients: (state) => {
+      state.constructorItems.bun = null;
+      state.constructorItems.ingredients = [];
     }
   },
   selectors: {
@@ -126,6 +130,7 @@ export const {
   addIngredient,
   deleteIngredient,
   moveUpIngredient,
-  moveDounIngredient
+  moveDounIngredient,
+  clearIngredients
 } = ingredientsSlice.actions;
-export const reducer = ingredientsSlice.reducer;
+export const ingredientReducer = ingredientsSlice.reducer;
