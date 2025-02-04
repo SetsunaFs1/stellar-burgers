@@ -5,6 +5,7 @@ import {
   TConstructorItems,
   TIngredient
 } from '@utils-types';
+import { uuidv4 } from '../../utils/get-random-id';
 
 type TBurgerIngredients = {
   ingredients: Array<TIngredient>;
@@ -43,9 +44,55 @@ const ingredientsSlice = createSlice({
           ...state.constructorItems,
           ingredients: [
             ...state.constructorItems.ingredients,
-            { ...action.payload, id: action.payload._id }
+            { ...action.payload, id: uuidv4() }
           ]
         };
+      }
+    },
+    deleteIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      state.constructorItems.ingredients =
+        state.constructorItems.ingredients.filter(
+          (ingredient) => ingredient.id !== action.payload.id
+        );
+    },
+    moveUpIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      const index = state.constructorItems.ingredients.findIndex(
+        (arr) => arr.id === action.payload.id
+      );
+      if (index > 0) {
+        const ingredientToMove = state.constructorItems.ingredients[index];
+        state.constructorItems.ingredients.splice(index, 1);
+        state.constructorItems.ingredients.splice(
+          index - 1,
+          0,
+          ingredientToMove
+        );
+      }
+    },
+    moveDounIngredient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      const index = state.constructorItems.ingredients.findIndex(
+        (arr) => arr.id === action.payload.id
+      );
+      if (
+        index !== -1 &&
+        index < state.constructorItems.ingredients.length - 1
+      ) {
+        const ingredientToMove = state.constructorItems.ingredients[index];
+        state.constructorItems.ingredients.splice(index, 1);
+        state.constructorItems.ingredients.splice(
+          index + 1,
+          0,
+          ingredientToMove
+        );
       }
     }
   },
@@ -75,5 +122,10 @@ const ingredientsSlice = createSlice({
 
 export const { getBuns, getMains, getSauces } = ingredientsSlice.selectors;
 
-export const { addIngredient } = ingredientsSlice.actions;
+export const {
+  addIngredient,
+  deleteIngredient,
+  moveUpIngredient,
+  moveDounIngredient
+} = ingredientsSlice.actions;
 export const reducer = ingredientsSlice.reducer;
