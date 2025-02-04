@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/services/store';
 import { getOrderByNumberThunk } from '../../services/slices/order-slice';
+import { getIngredientsThunk } from '../../services/slices/ingredients-slice';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,7 @@ export const OrderInfo: FC = () => {
 
   useEffect(() => {
     dispatch(getOrderByNumberThunk(Number(numberOrder)));
+    dispatch(getIngredientsThunk());
   }, []);
 
   /* Готовим данные для отображения */

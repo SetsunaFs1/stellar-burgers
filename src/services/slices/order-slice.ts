@@ -17,8 +17,9 @@ interface Order {
   feed: TFeedsResponse | null;
 }
 
-export const getFeedsThunk = createAsyncThunk('feed/getFeed', () =>
-  getFeedsApi()
+export const getFeedsThunk = createAsyncThunk(
+  'feed/getFeed',
+  async () => await getFeedsApi()
 );
 
 export const getOrdersThunk = createAsyncThunk(
@@ -67,7 +68,6 @@ export const orderSlice = createSlice({
       state.isLoading = false;
       state.orderRequest = false;
       state.feed = action.payload;
-      state.orders = action.payload.orders;
     });
     builder.addCase(getOrdersThunk.pending, (state) => {
       state.isLoading = true;

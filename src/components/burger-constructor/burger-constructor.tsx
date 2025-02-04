@@ -2,7 +2,8 @@ import { FC, useMemo } from 'react';
 import {
   TConstructorIngredient,
   TConstructorItems,
-  TOrder
+  TOrder,
+  TUser
 } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,10 +13,12 @@ import {
   orderBurgerThunk
 } from '../../services/slices/order-slice';
 import { clearIngredients } from '../../services/slices/ingredients-slice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
+  const user = useSelector<RootState, TUser | null>((state) => state.user.user);
   const constructorItems = useSelector<RootState, TConstructorItems>(
     (state) => state.ingredients.constructorItems
   );
@@ -36,11 +39,11 @@ export const BurgerConstructor: FC = () => {
       ...constructorItems.ingredients.map((ingredients) => ingredients._id),
       constructorItems.bun._id
     ];
-    /** TODO: добавить роут */
-    // if (!user) {
-    //   navigate('/login');
-    // } else {
-    dispatch(orderBurgerThunk(newOrder));
+    if (!user) {
+      navigate('/login');
+    } else {
+      dispatch(orderBurgerThunk(newOrder));
+    }
   };
 
   const closeOrderModal = () => {
