@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
 import { addIngredient } from '../../services/slices/ingredients-slice';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(

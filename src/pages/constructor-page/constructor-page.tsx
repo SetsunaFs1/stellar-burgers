@@ -1,23 +1,20 @@
-import { AppDispatch, RootState } from '../../services/store';
-
 import styles from './constructor-page.module.css';
-
 import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC, useEffect } from 'react';
 import { getIngredientsThunk } from '../../services/slices/ingredients-slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 
 export const ConstructorPage: FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const isIngredientsLoading = useSelector<RootState>(
+  const dispatch = useDispatch();
+  const isIngredientsLoading = useSelector(
     (state) => state.ingredients.isLoading
   );
 
-  useEffect(() => {
-    dispatch(getIngredientsThunk());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getIngredientsThunk());
+  // }, []);
 
   return (
     <>

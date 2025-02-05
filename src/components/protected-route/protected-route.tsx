@@ -1,7 +1,6 @@
 import { TUser } from '@utils-types';
-import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { AppDispatch, RootState } from 'src/services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '@ui';
 import { Navigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
@@ -17,11 +16,9 @@ export const ProtectedRoute = ({
   children
 }: ProtectedRouteProps) => {
   const location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
-  const isAuthChecked = useSelector<RootState, boolean>(
-    (state) => state.user.isAuthChecked
-  );
-  const user = useSelector<RootState, TUser | null>((state) => state.user.user);
+  const dispatch = useDispatch();
+  const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch(checkUser());
