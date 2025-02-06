@@ -103,39 +103,37 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
       </Routes>
       {backgroundLocation && (
-        <>
-          <Routes>
-            <Route
-              path='/feed/:number'
-              element={
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='' onClose={() => closeOrderOnClick()}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal
+                title='Детали ингредиента'
+                onClose={() => window.history.back()}
+              >
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
                 <Modal title='' onClose={() => closeOrderOnClick()}>
                   <OrderInfo />
                 </Modal>
-              }
-            />
-            <Route
-              path='/ingredients/:id'
-              element={
-                <Modal
-                  title='Детали ингредиента'
-                  onClose={() => window.history.back()}
-                >
-                  <IngredientDetails />
-                </Modal>
-              }
-            />
-            <Route
-              path='/profile/orders/:number'
-              element={
-                <ProtectedRoute>
-                  <Modal title='' onClose={() => closeOrderOnClick()}>
-                    <OrderInfo />
-                  </Modal>
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       )}
     </div>
   );
