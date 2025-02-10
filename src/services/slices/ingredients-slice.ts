@@ -1,10 +1,10 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorIngredient,
   TConstructorItems,
   TIngredient
-} from '@utils-types';
+} from '../../utils/types';
 import { uuidv4 } from '../../utils/get-random-id';
 
 type TBurgerIngredients = {
@@ -14,7 +14,7 @@ type TBurgerIngredients = {
   isInit: boolean;
 };
 
-const initialState: TBurgerIngredients = {
+export const initialState: TBurgerIngredients = {
   ingredients: [],
   isLoading: false,
   isInit: false,

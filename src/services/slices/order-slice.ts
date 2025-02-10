@@ -4,9 +4,9 @@ import {
   getOrdersApi,
   orderBurgerApi,
   TFeedsResponse
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TOrder } from '@utils-types';
+import { TOrder } from '../../utils/types';
 
 interface Order {
   orderRequest: boolean;
@@ -62,7 +62,7 @@ export const orderSlice = createSlice({
     });
     builder.addCase(getFeedsThunk.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? null;
+      state.error = (action.error.message as string) ?? null;
     });
     builder.addCase(getFeedsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -72,37 +72,44 @@ export const orderSlice = createSlice({
     builder.addCase(getOrdersThunk.pending, (state) => {
       state.isLoading = true;
       state.orderRequest = true;
+      state.error = null;
     });
     builder.addCase(getOrdersThunk.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message ?? null;
+      state.error = (action.error.message as string) ?? null;
     });
     builder.addCase(getOrdersThunk.fulfilled, (state, action) => {
       state.orderRequest = false;
       state.orders = action.payload;
+      state.error = null;
     });
     builder.addCase(orderBurgerThunk.pending, (state) => {
       state.isLoading = true;
       state.orderRequest = true;
+      state.error = null;
     });
     builder.addCase(orderBurgerThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.orderRequest = false;
-      state.error = action.error.message ?? null;
+      state.error = (action.error.message as string) ?? null;
     });
     builder.addCase(orderBurgerThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.orderRequest = false;
+      state.error = null;
       state.orderModalData = action.payload.order;
     });
     builder.addCase(getOrderByNumberThunk.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(getOrderByNumberThunk.rejected, (state, action) => {
-      state.error = action.error.message ?? null;
+      state.error = (action.error.message as string) ?? null;
+      state.isLoading = false;
     });
     builder.addCase(getOrderByNumberThunk.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.error = null;
       state.orderModalData = action.payload.orders[0];
     });
   }

@@ -9,7 +9,7 @@ import { ingredientReducer } from './slices/ingredients-slice';
 import { orderReducer } from './slices/order-slice';
 import { userReducer } from './slices/user-slice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredients: ingredientReducer,
   orders: orderReducer,
   user: userReducer
@@ -20,6 +20,7 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production'
 });
 
+export type AppStore = typeof store;
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
