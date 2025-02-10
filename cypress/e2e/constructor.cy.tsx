@@ -1,8 +1,18 @@
-import Cypress from 'cypress';
-
 const BURGER_API_URL = 'https://norma.nomoreparties.space/api';
 const BUN_ID = `[data-cy=${'643d69a5c3f7b9001cfa093c'}]`;
 const BURGER_FILLING_ID = `[data-cy=${'643d69a5c3f7b9001cfa0941'}]`;
+const HOST = 'http://localhost:4000';
+
+Cypress.Commands.add('modalShouldBeEmpty', () =>
+  cy.get('#modals').should('be.empty')
+);
+Cypress.Commands.add('modalShouldNotBeEmpty', () =>
+  cy.get('#modals').should('not.be.empty')
+);
+
+Cypress.Commands.add('modalIngredient', () =>
+  cy.get(BURGER_FILLING_ID).children('a').click()
+);
 
 beforeEach(() => {
   cy.intercept('GET', `${BURGER_API_URL}/ingredients`, {
@@ -14,7 +24,7 @@ beforeEach(() => {
   cy.intercept('POST', `${BURGER_API_URL}/auth/login`, {
     fixture: 'user.json'
   });
-  cy.visit('http://localhost:4000/');
+  cy.visit(HOST);
 });
 
 describe('Добавление ингредиентов', () => {
@@ -31,24 +41,24 @@ describe('Добавление ингредиентов', () => {
 
 describe('Открытие/закрытие модальных окон', () => {
   it('Открытие модального окна', () => {
-    cy.get('#modals').should('be.empty');
-    cy.get(BURGER_FILLING_ID).children('a').click();
-    cy.get('#modals').should('not.be.empty');
+    cy.modalShouldBeEmpty();
+    cy.modalIngredient();
+    cy.modalShouldNotBeEmpty();
     cy.url().should('include', '1');
   });
   it('Закрытие модального окна нажатием на кнопку крестика', () => {
-    cy.get('#modals').should('be.empty');
-    cy.get(BURGER_FILLING_ID).children('a').click();
-    cy.get('#modals').should('not.be.empty');
+    cy.modalShouldBeEmpty();
+    cy.modalIngredient();
+    cy.modalShouldNotBeEmpty();
     cy.get('#modals').find('button').click();
-    cy.get('#modals').should('be.empty');
+    cy.modalShouldBeEmpty();
   });
   it('Закрытие модального окна нажатием на кнопку esc', () => {
-    cy.get('#modals').should('be.empty');
-    cy.get(BURGER_FILLING_ID).children('a').click();
-    cy.get('#modals').should('not.be.empty');
+    cy.modalShouldBeEmpty();
+    cy.modalIngredient();
+    cy.modalShouldNotBeEmpty();
     cy.get('body').click(0, 0);
-    cy.get('#modals').should('be.empty');
+    cy.modalShouldBeEmpty();
   });
 });
 
@@ -68,7 +78,7 @@ describe('Оформление заказа для авторизированн�
     cy.getCookie('accessToken').should((cookies) => {
       expect(cookies).to.not.be.empty;
     });
-    cy.visit('http://localhost:4000/');
+    cy.visit(HOST);
   });
   afterEach(() => {
     cy.clearAllLocalStorage();
@@ -79,7 +89,7 @@ describe('Оформление заказа для авторизированн�
     });
   });
   it('Оформление заказа на главной странице после авторизации', () => {
-    cy.visit('http://localhost:4000/login');
+    cy.visit(`${HOST}/login`);
     cy.get(email).click().type(user.email);
     cy.get(password).click().type(user.password);
     cy.get('button').contains('Войти').click();
